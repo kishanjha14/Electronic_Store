@@ -1,6 +1,9 @@
 package com.kishan.Electroinc.store.ElectronicStore.exception;
 
 import com.kishan.Electroinc.store.ElectronicStore.dtos.ApiResponseMessage;
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponseMessage> resourceNotFoundExceptionHandler(ResourceNotFoundException ex) {
+        logger.info("Exception Handler Invoked!");
+
+        ApiResponseMessage apiResponseMessage = ApiResponseMessage.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .success(true)
+                .build();
+
+        return new ResponseEntity<>(apiResponseMessage, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ApiResponseMessage> IOException(IOException ex) {
         logger.info("Exception Handler Invoked!");
 
         ApiResponseMessage apiResponseMessage = ApiResponseMessage.builder()
